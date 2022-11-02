@@ -1,0 +1,136 @@
+.menu-action {
+  display: flow-root;
+  margin-bottom: -15px;
+  margin-right: -8px;
+  margin-top: 0px;
+  margin-left: -20px;
+}
+.menu-action a,
+.menu-action button {
+  color: white;
+  float: left;
+  margin: 0 2px;
+  border-radius: initial;
+}
+
+.menu-action button i {
+  margin-right: 5px;
+}
+
+.forms {
+  margin: 5px 15px;
+}
+.forms .title {
+  display: inline-flex;
+  float: left;
+}
+.forms .action {
+  display: inline-flex;
+  float: right;
+}
+.forms .action button {
+  margin-right: 4px;
+  padding: 12px 10px;
+  line-height: 0px;
+  font-weight: 200;
+  border-radius: inherit;
+}
+.forms .action button i {
+  font-size: 14px;
+  margin-right: 5px;
+  margin-top: -2px;
+}
+
+.mat-expansion-panel-header:not([aria-disabled="true"]),
+.mat-expansion-panel-header.mat-expanded:focus,
+.mat-expansion-panel-header.mat-expanded:hover {
+  height: 40px !important;
+  border: 2px solid #dadada;
+  border-radius: 0;
+  background: #e9ecef;
+}
+
+.mat-expansion-panel {
+  margin: 10px;
+}
+
+.mat-expansion-panel-content,
+.contentdetails {
+  margin-top: 15px !important;
+}
+
+.mat-expansion-panel-body {
+  padding: 0 5px 10px;
+}
+
+.contentdetails p {
+  font-size: 14px;
+  color: #000;
+  font-weight: 400;
+  text-align: left;
+}
+
+.contentdetails p span {
+  font-size: 14px;
+  color: #666;
+  text-align: right;
+}
+
+.contentdetails .label2det {
+  float: right;
+  font-weight: 600;
+}
+
+.contentdetails hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  width: 90%;
+}
+
+.contentdetails .select {
+  height: 33px;
+}
+
+.mat-expansion-panel input,
+.mat-expansion-panel textarea {
+  height: 33px;
+  margin-right: -20px;
+}
+
+.mat-expansion-panel textarea {
+  height: 60px;
+}
+
+.contentdetails .col-lg-4,
+.contentdetails .col-lg-12 {
+  margin-bottom: 8px;
+  width: auto;
+}
+
+mat-hint {
+  color: #a33;
+}
+.mat-datepicker-toggle {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.header_title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.cdkeditorreadonly {
+  border: 1px solid #ced4da;
+  background: #e9ecef;
+  color: #495057;
+  border-radius: 2px;
+  height: max-content;
+}
+
+.mat-tab-group {
+  display: block;
+}

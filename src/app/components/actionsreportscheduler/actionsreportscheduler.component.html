@@ -1,0 +1,14 @@
+
+<div class="action-table">
+  
+    <!-- <a class="btn btn-warning" title="View Details" (click)="viewDetails()"> <i class="fa fa-eye"></i></a> -->
+    <a class="btn btn-success" title="Edit" (click)="editDetails(data)"> <i class="fa fa-edit"></i></a>
+    <!-- <a type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal1"><i class="fa fa-eye"></i></a> -->
+    <a *ngIf="this.deletePerm" class="btn btn-danger"  title="Delete" (click)="deleteschedule(data)"> <i class="fa fa-trash"></i></a> <!--*ngIf="data.active_FLAG == 0"-->
+    <!-- <a *ngIf="data.active_FLAG == 1" class="activeFlag"  title="Active"> Active </a>
+    <a *ngIf="data.active_FLAG == 0" class="deactiveFlag"  title="Deactive">Deactive </a> -->
+    <a *ngIf="this.createPerm" class="btn btn-success" style="padding: 11px" title="Clone" (click)="cloneAction(data)">Clone</a>
+
+</div>
+
+

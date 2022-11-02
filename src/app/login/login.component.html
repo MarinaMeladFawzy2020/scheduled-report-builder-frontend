@@ -1,0 +1,51 @@
+<div id="header_login">
+    <mat-toolbar class="main-color">
+    <div class="title">
+      <h3 style="font-size: 20px;">Scheduled Report Builder </h3>
+    </div>
+    </mat-toolbar>
+</div>
+
+
+<div id="login" class="container" >
+<mat-card>
+  <div class="title">
+    <div class="logo">
+      <img src="./assets/images/NI-Logo-1.png" />
+    </div>
+  </div>
+
+  <form #f="ngForm" (ngSubmit)="submit(f)" >
+  <mat-card-content>
+    <mat-form-field floatLabel="auto" appearance="outline">
+      <input matInput type="text"     placeholder="UserName"
+      id="username"  name="username"  ngModel  #username="ngModel" required>
+      <mat-hint *ngIf="username.invalid && username.touched ">Username is required </mat-hint>
+      </mat-form-field>
+
+
+      <mat-form-field floatLabel="auto" appearance="outline">
+        <!-- <mat-label>password</mat-label> -->
+        <input matInput type="password"     placeholder="password"
+        id="password"  name="password"  ngModel  #password="ngModel" required>
+        <mat-hint *ngIf="password.invalid && password.touched">Password is required </mat-hint>
+        </mat-form-field>
+
+        <mat-hint *ngIf="showErrorMessage">Invalid username or password</mat-hint> 
+
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button  [disabled]=f.form.invalid class="main-color" #submitButton>
+      LOGIN
+    </button>
+  </mat-card-actions>
+
+</form>
+
+
+</mat-card>
+</div>
+
+
+

@@ -1,0 +1,112 @@
+/* You can add global styles to this file, and also import other style files */
+/* @import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; */
+
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+/*ag-grid Style*/
+@import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
+@import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-h3,
+.mat-subheading-2,
+.mat-typography h3 {
+  margin: 0px;
+}
+.mat-raised-button {
+  font-weight: 400;
+}
+b {
+  font-weight: 500;
+}
+
+.main-color {
+  background: #1e3567; /*#3f51b5*/
+  color: white;
+}
+
+.btn {
+  border-radius: 0;
+}
+
+.breadcrumb {
+  background: #eaeaea;
+}
+
+/*datepicker*/
+.cdk-overlay-container {
+  position: fixed !important;
+  z-index: 1120;
+}
+.cdk-text-field-autofill-monitored:not(:-webkit-autofill) {
+  border: 1px solid #ced4da;
+  padding-left: 10px;
+}
+.mat-datepicker-toggle {
+  background: #cecece;
+  padding-top: 8px;
+  color: #666666;
+  border: 1px solid #b9b9b9;
+  padding-bottom: 9px;
+}
+
+#schedulerModal .modal-body {
+  overflow-y: scroll;
+  height: 500px;
+}
+
+.ag-theme-alpine .ag-ltr .ag-cell {
+  border-right-width: 1px;
+  border-right: 1px solid #ddd;
+}
+.ag-theme-alpine .ag-header-cell,
+.ag-theme-alpine .ag-header-group-cell {
+  padding-left: 18px;
+  padding-right: 18px;
+  border-right: 1px solid #ddd;
+}
+
+.ag-theme-alpine .ag-ltr .ag-cell .cell-pass {
+  background: "lightgreen" !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-infix {
+  padding: 0 0 !important;
+}
+
+.q-entity-control,
+.q-field-control,
+.q-input-control:not([type="checkbox"]),
+.q-operator-control,
+.q-control-size {
+  min-height: 39px !important;
+  -webkit-appearance: none !important;
+  margin-left: 10px !important;
+  margin-top: 6px !important;
+}
+
+.q-control-size {
+  display: inline-block;
+  vertical-align: inherit !important;
+  padding-right: 10px;
+}
+
+.q-entity-control:disabled,
+.q-field-control:disabled,
+.q-input-control:disabled,
+.q-operator-control:disabled {
+  border-color: #ced4da !important;
+  color: black !important;
+  background: #e9ecef !important;
+}
+
+.q-tree-container{
+  overflow: inherit !important;
+}

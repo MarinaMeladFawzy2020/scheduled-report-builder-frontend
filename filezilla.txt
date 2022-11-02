@@ -1,0 +1,48 @@
+http://161.97.82.42:7001/ReportBuilder/  -- No VPN root - root1234
+
+http://161.97.82.42:7001/console
+
+weblogic
+Weblogic123
+
+
+FileZilla
+sftp://161.97.82.42
+oracle
+0Rr@Mts@$#@
+22
+-----------------------------
+
+deploy : 
+http://10.19.35.75:8003/WfmReports/#/Report
+root
+root 1234
+
+FileZilla
+
+sftp://10.19.35.75
+oracle
+P@ssw0rd@2030
+
+/u01/Deployments/scheduledreport
+
+
+weblogic
+
+http://10.19.35.75:8001/console/
+weblogic
+Weblogic123+
+
+
+
+
+notes: 
+1- change uRl in index to <base href="./">
+2- select dist/nameproject then add files to (zip) then write to (war)
+3- uploading to filezilla
+
+4- uploading to weblogic 
+	1- deployment 
+	2- select name project (scheduledreport) then (delete) then work (install) from filezilla 
+	3- select path deployment  (/ u01/ Deployments/ scheduledreport. war)
+	3- select (managed_1)

@@ -1,0 +1,144 @@
+<br>
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Select filters   <!--( Flag : {{ActiveFlagQuery}} - {{ReportID}} - {{SchID}} )-->
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <br>
+  <button *ngIf="this.editPerm" class="btn btn-success" (click) = "onSubmitQuery()" [disabled]="this.ActiveFlagQuery == 1">Save</button>
+  <br><br>
+
+  <query-builder [(ngModel)]='query' [config]='config' [allowRuleset]='false' [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm">
+
+    <!-- CUSTOMIZE ADD BUTTON -->
+    <ng-container *queryButtonGroup="let ruleset; let addRule=addRule; let addRuleSet=addRuleSet; let removeRuleSet=removeRuleSet">
+        <button class="btn btn-primary" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm" type="button" (click)="addRule(); onDataChange($event)">
+            <i class="fa fa-plus"></i> Add Filter
+        </button>
+    </ng-container>
+
+    <!-- CUSTOMIZE REMOVE BUTTON -->
+    <ng-container *queryRemoveButton="let rule; let removeRule=removeRule; let addRule=addRule;">
+      <span *ngIf="!rule.required">
+          <button class="btn btn-danger" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm" type="button" (click)="removeRule(rule); onDataChange($event)">
+              <i class="fa fa-trash"></i> Remove
+          </button>
+      </span>
+    </ng-container>
+
+    <!-- FIELDS -->
+    <ng-container *queryField="let rule; let fields=fields; let onChange=onChange">
+        <mat-form-field>
+          <mat-select [(ngModel)]="rule.field" (ngModelChange)="onChange($event, rule); onDataChange($event)" [disabled]="rule.required || (this.ActiveFlagQuery == 1 || !this.editPerm)">
+            <mat-option *ngFor="let field of fields" [value]="field.value">{{field.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+    </ng-container>
+
+    <!-- OPERATORS -->
+    <ng-container *queryOperator="let rule; let operators=operators;" >
+        <select class="form-select form-control" (ngModelChange)="onDataChange($event)" [(ngModel)]="rule.operator" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm">
+        <option *ngFor="let value of operators" [value]="value">{{value}}</option>
+      </select>
+    </ng-container>
+
+    <!-- category attribute -->
+    <ng-container *queryInput="let rule; let field=field; let options=options; type: 'category'">
+      <select class="form-select form-control" (ngModelChange)="onDataChange($event)" [(ngModel)]="rule.value"  [value]="rule.value"  [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm">
+        <option *ngFor="let opt of options" [value]="opt.value"> {{ opt.name }}</option>
+      </select>
+    </ng-container>
+
+    <!-- multiselect attributes -->
+    <ng-container *queryInput="let rule; let options=options; type: 'multiselect'">
+        <ng-select [items]="options"
+                   bindLabel="name"
+                   bindValue="value"
+                   [multiple]="true"
+                   [closeOnSelect]="false"
+                   [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm"
+                   (ngModelChange)="onDataChange($event)"
+                   [(ngModel)]="rule.value">
+        </ng-select>
+    </ng-container>
+
+    <!-- string attributes -->
+    <ng-container *queryInput="let rule; let field=field; let options=options; type: 'string'">
+      <mat-checkbox style="margin-left: 15px" (ngModelChange)="onDataChange($event)" *ngIf="field.entity === 1 && validatedWithOperator(rule)" [(ngModel)]="rule.isFunction">Is Function?</mat-checkbox>
+
+      <select *ngIf="field.entity === 1 && validatedWithOperator(rule) && rule.isFunction" (ngModelChange)="onDataChange($event)" class="form-select form-control" [(ngModel)]="rule.selectedFunction"  [value]="rule.selectedFunction" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm">
+        <option *ngFor="let opt of options" [value]="opt.value"> {{ opt.name }}</option>
+      </select>
+
+      <input style="margin-bottom: 7px;" (ngModelChange)="onDataChange($event)" *ngIf="showInputBox(rule.isFunction, rule.selectedFunction)" matInput class="form-select form-control" type="text"  [(ngModel)]="rule.value"/>
+    </ng-container>
+
+    <!-- date attributes -->
+    <ng-container *queryInput="let rule; let field=field; let options=options; type: 'date'">
+
+        <!-- additional input in between case -->
+        <div *ngIf="rule.operator == 'between'" style="display: -webkit-inline-box;" >  <!-- style="margin-top: -55px;  margin-left: 305px;" -->
+        <span style="float: left;  margin: 5px 5px; font-weight: 600;"> From :</span>
+
+        <mat-checkbox style="margin-left: 15px ; float: left" (ngModelChange)="onDataChange($event); rule.value1 = null" *ngIf="field.entity === 1 && validatedWithOperator(rule)" [(ngModel)]="rule.isFunction1" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm">Is Function?</mat-checkbox>
+
+        <select *ngIf="rule.isFunction1" (ngModelChange)="onDataChange($event)" class="form-select form-control" [(ngModel)]="rule.selectedFunction1"  [value]="rule.selectedFunction1" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm" style="float: left;margin-right: 5px;">
+          <option *ngFor="let opt of options" [value]="opt.value"> {{ opt.name }}</option>
+        </select>
+
+        <input  (ngModelChange)="onDataChange($event)" *ngIf="showInputBox(rule.isFunction1, rule.selectedFunction1) == 'regular'" required [(ngModel)]="rule.value1" type="date" name="value1"  id="value1" #value1="ngModel" class="form-control"  style="width: 197px; display: inline-block; margin-bottom: 7px;  height: 30px;" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm"  >
+        <input  (ngModelChange)="onDataChange($event)" *ngIf="showInputBox(rule.isFunction1, rule.selectedFunction1) == 'param'" required [(ngModel)]="rule.value1" type="number" name="value1"  id="value1" #value1="ngModel" class="form-control"  style="width: 197px; display: inline-block; margin-bottom: 7px;  height: 30px;" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm"  >
+
+        <!-- <span style=" margin: 5px 5px; font-weight: 600;"> To :</span> -->
+
+      </div>
+      <br *ngIf="rule.operator == 'between'" >
+      <span style=" margin: 5px 5px; font-weight: 600;  margin-left: 32.7%; "  *ngIf="rule.operator == 'between'" > To :</span>
+      <!-- end additional input -->
+
+      <!-- main input -->
+      <mat-checkbox style="margin-left: 15px" (ngModelChange)="onDataChange($event); rule.value = null" *ngIf="field.entity === 1 && validatedWithOperator(rule)" [(ngModel)]="rule.isFunction" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm">Is Function?</mat-checkbox>
+
+      <select *ngIf="rule.isFunction" (ngModelChange)="onDataChange($event)" class="form-select form-control" [(ngModel)]="rule.selectedFunction"  [value]="rule.selectedFunction" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm">
+        <option *ngFor="let opt of options" [value]="opt.value"> {{ opt.name }}</option>
+      </select>
+
+      <input  (ngModelChange)="onDataChange($event)" *ngIf="showInputBox(rule.isFunction, rule.selectedFunction) == 'regular'" matInput class="form-select form-control" type="date"  [(ngModel)]="rule.value" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm"/>
+      <input  (ngModelChange)="onDataChange($event)" *ngIf="showInputBox(rule.isFunction, rule.selectedFunction) == 'param'" matInput class="form-select form-control" type="number"  [(ngModel)]="rule.value" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm"/>
+
+      <!-- end main input -->
+    </ng-container>
+
+    <!-- number attributes -->
+    <ng-container *queryInput="let rule; let field=field; let options=options; type: 'number'" style="display: flex;">
+
+      <!-- additional input in between case -->
+      <div *ngIf="rule.operator == 'between'" style="display: -webkit-inline-box;">  <!--style="margin-top: -55px;  margin-left: 305px;"-->
+        <span style="float: left;  margin: 5px 5px; font-weight: 600;"> From :</span>
+
+        <mat-checkbox style="margin-left: 15px ; margin-right: 10px;" (ngModelChange)="onDataChange($event); rule.value1 = null" *ngIf="field.entity === 1 && validatedWithOperator(rule)" [(ngModel)]="rule.isFunction1" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm">Is Function?</mat-checkbox>
+          <select *ngIf="rule.isFunction1" (ngModelChange)="onDataChange($event)" class="form-select form-control" [(ngModel)]="rule.selectedFunction1"  [value]="rule.selectedFunction1" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm" style="display: flex;">
+            <option *ngFor="let opt of options" [value]="opt.value"> {{ opt.name }}</option>
+          </select>
+        <input  (ngModelChange)="onDataChange($event)" *ngIf="showInputBox(rule.isFunction1, rule.selectedFunction1)" required [(ngModel)]="rule.value1" type="number" name="value1"  id="value1" #value1="ngModel" class="form-control"  style="display: inline-block; margin-bottom: 7px; height: 30px; margin-left: 5px;width: 197px;" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm"  >
+      </div>
+
+      <br *ngIf="rule.operator == 'between'" >
+      <span style=" margin: 5px 5px; font-weight: 600; margin-left: 32.7%; " *ngIf="rule.operator == 'between'"> To :</span>
+      <!-- end additional input -->
+
+      <!-- main input -->
+      <mat-checkbox style="margin-left: 15px ; margin-right: 10px;" (ngModelChange)="onDataChange($event); rule.value = null" *ngIf="field.entity === 1 && validatedWithOperator(rule)" [(ngModel)]="rule.isFunction" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm">Is Function?</mat-checkbox>
+
+      <select *ngIf="rule.isFunction" (ngModelChange)="onDataChange($event)" class="form-select form-control" [(ngModel)]="rule.selectedFunction"  [value]="rule.selectedFunction" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm" >
+        <option *ngFor="let opt of options" [value]="opt.value"> {{ opt.name }}</option>
+      </select>
+
+      <input style="margin-bottom: 7px;" (ngModelChange)="onDataChange($event)" *ngIf="showInputBox(rule.isFunction, rule.selectedFunction)" matInput class="form-select form-control" type="number"  [(ngModel)]="rule.value" [disabled]="this.ActiveFlagQuery == 1 || !this.editPerm"/>
+      <!-- end main input -->
+    </ng-container>
+
+  </query-builder>
+
+</mat-expansion-panel>

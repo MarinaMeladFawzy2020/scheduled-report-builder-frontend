@@ -1,0 +1,29 @@
+<div class="col-sm-12">
+  <div class="menu-action"><br>
+    <button *ngIf="this.editPerm" type="submit" class="btn btn-success" (click)="sendcolum(checkedList)" [disabled]="this.ActiveFlag == 1">Save</button>
+   
+    <button *ngIf="messpreview == true && this.prevPerm" class="btn btn-primary" (click)="PreviewTable()">Preview</button>
+  </div>
+</div>
+
+<div class="container prev-cont">
+  <div class="text-center mt-5">
+      <div class="row">
+        <div class="col-md-4">
+          <ul class="list-group"> 
+            <li class="list-group-item">
+              <input type="checkbox" [disabled]="this.ActiveFlag == 1 || !this.editPerm" (ngModelChange)="onDataChange(checkedList)" [(ngModel)]="masterSelected" name="list_name" value="m1" (change)="checkUncheckAll()"/> 
+      <strong> Select / Unselect All</strong>
+            </li>
+          </ul>
+          <ul class="list-group">
+            <li class="list-group-item" style="text-align: left" *ngFor="let item of checklist">
+              <input type="checkbox" [disabled]="this.ActiveFlag == 1 || !this.editPerm || item.is_MANDATORY == 1" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
+                (change)="isAllSelected()" (ngModelChange)="onDataChange(checkedList)" />
+                  {{item.column_NAME}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>

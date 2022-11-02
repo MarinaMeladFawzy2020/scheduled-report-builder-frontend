@@ -1,0 +1,63 @@
+<input id="sidebar-toggle" type="checkbox" />
+<div class="sidebar main-color">
+  <div class="sidbar-header">
+      <h3 class="brand">Scheduled Report Builder </h3> 
+    <div>
+      <label for="sidebar-toggle" class="fa fa-bars memu-icon" title="collapse"></label>
+    </div>
+  </div>
+
+  <div class="sidebar-menu" >
+    <ul>
+        <li routerLinkActive="active">
+            <a routerLink="/ReportSchedulerList" title="Report Scheduler">
+              <span class="fa fa-home  icon-navbar" ></span>
+              <span>Report Scheduler</span>
+            </a>
+          </li>
+
+          <!-- <li routerLinkActive="active">
+            <a routerLink="/Querybuilder" title="Querybuilder">
+              <span class="fa fa-home  icon-navbar" ></span>
+              <span>Querybuilder </span>
+            </a>
+          </li> -->
+          
+    </ul>
+  </div>
+</div>
+
+<!-- Content -->
+<div class="main-content">
+  <header>
+    <div class="logomtsit">
+      <img src="./assets/images/MTSLogo2.png" title="MTS"  width="115px"  />
+    </div>
+
+    <div  style="display: inline-flex;margin-left: 40px;border: 1px solid #d9dce0;">
+
+    <div class="dropdown" >
+        <button class="btn btn dropdown-toggle" type="button"  id="dropdownMenuButton"  data-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">
+            <i class="fa fa-user"></i>     {{usernameparam1}}
+        </button>
+        <ul class="dropdown-menu"  aria-labelledby="dropdownMenuButton">
+            <li class="dropdown-item" routerLink="" >
+            <a style="color: #000;" (click)="logout()"> <i class="fa fa-lock"></i>  Logout  </a>
+            </li>
+        </ul>
+    </div>
+
+    
+    </div>
+  </header>
+
+  <main>
+    <div class="container-fluid" >
+      <div style="background: white;margin-top: 60px; margin-left: -14px;margin-right: -15px;border-radius: inherit; height: 100vh;">
+        <router-outlet></router-outlet>
+        <!-- <app-listreportscheduler ></app-listreportscheduler> -->
+     </div>
+    </div>
+  </main>
+</div>
+

@@ -1,0 +1,57 @@
+
+<!--Start Search-->
+<mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+          Search
+          <span style="margin-left: 80%;"><b> ( Search Result : {{searchresult}} ) </b></span>
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+    
+    <form class="search-form" #f="ngForm" (ngSubmit)="search(f)">
+      <div class="form-group">
+
+        <div class="form-child module-input">
+          <label for="module">Report Category</label>
+          <select id="module" name="module" class="form-control select-module" ngModel (ngModelChange)="onSelectModule($event)">
+            <option selected [value]=""> </option>
+            <option *ngFor="let scope of userScopes" [value]="scope">{{scope}}</option>
+          </select>
+        </div>
+
+        <div class="form-child report-input">
+          <label for="rep_ID">Report Name</label>
+          <select id="rep_ID" name="rep_ID" class="form-control select-report" ngModel >
+            <option selected [value]="0"  > </option>
+            <option *ngFor="let Report of AllReports"  [value]="Report.rep_ID"  >{{Report.rep_NAME}} </option>
+          </select>
+        </div>
+
+        <div class="form-child schedulename-input">
+          <label for="sch_NAME">Schedule Name</label>
+          <input type="text" name="sch_NAME" class="form-control schedule-name-text" id="sch_NAME" ngModel >
+        </div>
+
+        <div class="form-child frequency-input">
+          <label for="sch_FREQ">Frequency</label>
+          <select id="sch_FREQ" name="sch_FREQ" class="form-control frequency-select" ngModel >
+            <option selected [value]=""></option>
+            <option *ngFor="let Freq of AllFreq"  [value]="Freq.freq_NAME_EN"  >{{Freq.freq_NAME_EN}}</option>
+          </select>
+        </div>
+
+        <div class="form-child freqtime-input">
+          <label for="sch_TIME">Frequency Time</label>
+          <input type="text" name="sch_TIME" class="form-control freqtime-text" id="sch_TIME" ngModel>
+        </div>
+
+      </div>
+
+      <div class="form-actions" style="text-align: right;">
+        <button type="submit" class="btn btn-success" [disabled]=f.form.invalid style="margin-right: 5px;" >Search</button>
+        <button type="button" class="btn btn-primary" (click)="reset(f)">Reset</button>
+      </div>
+
+    </form>
+  </mat-expansion-panel>
+  <!--End Search-->

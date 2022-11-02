@@ -1,0 +1,557 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb" style="border-bottom: 1px solid #e2e2e2; ">
+    <li class="breadcrumb-item"><a routerLink="/ReportSchedulerList"> Report Scheduler </a></li>
+    <li class="breadcrumb-item active" aria-current="page"> Report Scheduler </li>
+  </ol>
+</nav>
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+        crossorigin="anonymous">
+</script>
+<script src="jquery.email.multiple.js"></script>
+
+<div style="float: right; margin-right: 10px;">
+  <!-- <a *ngIf="flag == 0 && this.activePerm" type="button" class="btn btn-success" data-toggle="modal"
+    data-target="#ActiveModal" data-backdrop="static" data-keyboard="false">
+    <i class="fa fa-check "></i> Activate
+  </a> -->
+
+  <button *ngIf="flag == 0 && this.activePerm" class="btn btn-success" (click)="onClickActive(f.value)">
+    <i class="fa fa-check "></i> Activate
+  </button>
+
+  <a *ngIf="flag == 1 && this.activePerm" type="button" class="btn btn-danger" data-toggle="modal"
+    data-target="#DeactiveModal" data-backdrop="static" data-keyboard="false">
+    <i class="fa fa-times"></i> Deactivate
+  </a>
+</div>
+
+<mat-tab-group #tabs>
+
+  <mat-tab label="Scheduler Details">
+
+    <mat-accordion multi="true">
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Edit Scheduler Details
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="contentdetails">
+
+          <form #f="ngForm" (ngSubmit)="onClickSubmit(f.value)">
+
+            <div class="col-sm-12">
+              <div class="menu-action">
+                <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop"
+                  (click)="goback()">
+                  <i class="fa fa-undo"></i> back
+                </a>
+
+                <!-- <a *ngIf="flag == 0 && this.activePerm" type="button" class="btn btn-success" data-toggle="modal"
+                  data-target="#ActiveModal" data-backdrop="static" data-keyboard="false">
+                  <i class="fa fa-check "></i> Activate
+                </a>
+
+
+
+                <a *ngIf="flag == 1 && this.activePerm" type="button" class="btn btn-danger" data-toggle="modal"
+                  data-target="#DeactiveModal" data-backdrop="static" data-keyboard="false">
+                  <i class="fa fa-times"></i> Deactivate
+                </a> -->
+
+
+                <button *ngIf="flag == 0 && this.editPerm" type="submit" class="btn btn-success"> <i
+                    class="fa fa-floppy-o "></i>Save </button>
+              </div>
+            </div>
+
+
+            <div class="row" style="margin-top: 30px;padding: 0 10px;">
+
+              <h3 class="row header_title">Report Schedule Info : </h3>
+
+              <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display: none;">
+                <div class="col-lg-6">
+                  <p> ID : </p>
+                </div>
+                <div class="col-lg-6">
+                  <input readonly type="text" class="form-control" id="id" name="id" [(ngModel)]="mainData.id" />
+                </div>
+              </div>
+
+              <div class="col-lg-12 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;">
+                <div class="col-lg-2">
+                  <p> Report Category : </p>
+                </div>
+                <div class="col-lg-10" >
+                  <input readonly type="text" class="form-control" id="rep_MODULE" #rep_MODULE="ngModel" name="rep_MODULE"
+                  [(ngModel)]="mainData.report.rep_MODULE" style=" margin-left: -8px;" />
+                </div>
+              </div>
+
+              <div class="col-lg-12 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;">
+                <div class="col-lg-2">
+                  <p> Report Name : </p>
+                </div>
+                <div class="col-lg-10" >
+
+                  <input readonly type="text" class="form-control" id="rep_ID" #rep_ID="ngModel" name="rep_ID"
+                  [(ngModel)]="mainData.report.rep_ID" style=" margin-left: -8px; display:none" />
+
+                  <input readonly type="text" class="form-control" id="rep_NAME" #rep_NAME="ngModel" name="rep_NAME"
+                  [(ngModel)]="repName" style=" margin-left: -8px;" />
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;">
+                <div class="col-lg-6">
+                  <p> Schedule Name : </p>
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 0 && this.editPerm">
+                  <input type="text" class="form-control" id="sch_NAMES" #sch_NAME="ngModel" name="sch_NAME"
+                    [(ngModel)]="mainData.sch_NAME" (ngModelChange)="onDataChange(f.value)" required />
+                  <mat-hint *ngIf="sch_NAME.errors?.required && sch_NAME.touched"> Schedule Name is Required </mat-hint>
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 1 || !this.editPerm">
+                  <input type="text" readonly class="form-control" id="sch_NAME" #sch_NAME="ngModel" name="sch_NAME"
+                    [(ngModel)]="mainData.sch_NAME" />
+                  <mat-hint *ngIf="sch_NAME.errors?.required && sch_NAME.touched"> Schedule Name is Required </mat-hint>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;">
+                <div class="col-lg-6">
+                  <p> Schedule Start Date : </p>
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 0 && this.editPerm">
+                  <input for="matDatepicker2" class="col-form-label" matInput style="width: 75%;"
+                    [matDatepicker]="matDatepicker2" id="sch_START" #sch_START="ngModel" name="sch_START"
+                    [(ngModel)]="mainData.sch_START" (ngModelChange)="onDataChange(f.value)">
+                  <mat-datepicker-toggle matSuffix [for]="matDatepicker2"
+                    style="padding-top: 6px; padding-bottom: 11px;"></mat-datepicker-toggle>
+
+                  <mat-datepicker #matDatepicker2></mat-datepicker>
+                  <mat-hint *ngIf="sch_START.errors?.required && sch_START.touched">Schedule Start is Required
+                  </mat-hint>
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 1  || !this.editPerm">
+                  <input readonly class="form-control" id="sch_START" name="sch_START" [(ngModel)]="sch_START">
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;">
+                <div class="col-lg-6">
+                  <p> Creator : </p>
+                </div>
+                <div class="col-lg-6">
+                  <input readonly type="text" class="form-control" id="created_BY" name="created_BY"
+                    [(ngModel)]="mainData.created_BY" />
+                </div>
+              </div>
+
+
+
+
+              <!-- <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6"  style="display: none;">
+          <div class="col-lg-6">
+            <p> sch_FREQ_UNIT : </p>
+          </div>
+          <div class="col-lg-6"  *ngIf="flag == 0">
+            <input type="text" class="form-control" id="sch_FREQ_UNIT" #sch_FREQ_UNIT ="ngModel" name="sch_FREQ_UNIT" [(ngModel)]="mainData.sch_FREQ_UNIT"   />
+              <mat-hint *ngIf="sch_FREQ_UNIT.errors?.required && sch_FREQ_UNIT.touched">sch_FREQ_UNIT is Required </mat-hint>
+          </div>
+          <div class="col-lg-6"  *ngIf="flag == 1">
+            <input type="text" readonly class="form-control" id="sch_FREQ_UNIT" #sch_FREQ_UNIT ="ngModel" name="sch_FREQ_UNIT" [(ngModel)]="mainData.sch_FREQ_UNIT"   />
+              <mat-hint *ngIf="sch_FREQ_UNIT.errors?.required && sch_FREQ_UNIT.touched">sch_FREQ_UNIT is Required </mat-hint>
+          </div>
+        </div> -->
+
+
+
+              <hr>
+              <h3 class="row header_title">Frequency Info : </h3>
+
+              <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;">
+                <div class="col-lg-6">
+                  <p> Frequency Unit : </p>
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 0 && this.editPerm">
+                  <select id="sch_FREQ" name="sch_FREQ" class="form-control" #sch_FREQ="ngModel"
+                    [(ngModel)]="mainData.sch_FREQ" (ngModelChange)="onDataChange(f.value)">
+                    <option value="">None</option>
+                    <option *ngFor="let Freq of AllFreq" [value]="Freq.freq_NAME_EN">{{Freq.freq_NAME_EN}} </option>
+                  </select>
+                  <mat-hint *ngIf="sch_FREQ.errors?.required && sch_FREQ.touched">Frequency Unit is Required </mat-hint>
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 1 || !this.editPerm">
+                  <input readonly type="text" class="form-control" id="sch_FREQ" #sch_FREQ="ngModel" name="sch_FREQ"
+                    [(ngModel)]="mainData.sch_FREQ" />
+                </div>
+              </div>
+
+              <!--Start FreqTime-->
+
+              <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display: none;">
+                <div class="col-lg-6">
+                  <p> Frequency Time : </p>
+                </div>
+                <div class="col-lg-6">
+                  <input type="text" class="form-control" id="sch_TIME" name="sch_TIME"
+                    [(ngModel)]="mainData.sch_TIME" (ngModelChange)="onDataChange(f.value)" />
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;"
+                *ngIf='f.value.sch_FREQ == "Hourly"'>
+                <div class="col-lg-6">
+                  <p> Minute : </p>
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 0 && this.editPerm">
+                  <select required id="minute" name="minute" class="form-control" [(ngModel)]="minu" (ngModelChange)="onDataChange(f.value)">
+                    <option *ngFor="let minu of minute" [value]="minu">{{minu}} </option>
+                  </select>
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 1 || !this.editPerm">
+                  <input readonly type="text" class="form-control" id="minute" #minute="ngModel" name="minute"
+                    [(ngModel)]="minu" />
+                </div>
+              </div>
+
+
+              <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;"
+                *ngIf='f.value.sch_FREQ == "Daily" || f.value.sch_FREQ == "Weekly" || f.value.sch_FREQ == "Monthly"'>
+                <div class="col-lg-6">
+                  <p> Time : </p>
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 0 && this.editPerm">
+                  <input required type="time" id="time" name="time" class="form-control" [(ngModel)]="time" (ngModelChange)="onDataChange(f.value)">
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 1 || !this.editPerm">
+                  <input readonly type="time" id="time" name="time" class="form-control" [(ngModel)]="time">
+                </div>
+              </div>
+
+              <div class="col-lg-12 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;"
+                *ngIf='f.value.sch_FREQ == "Daily"'>
+                <div class="col-lg-2">
+                  <p> Multi Day : </p>
+                </div>
+                <div class="col-lg-10" *ngIf="flag == 0 && this.editPerm">
+                  <mat-form-field style="margin-left: -12px; width: 552px !important;">
+                    <!-- <mat-select multiple [formControl]="dayss"  class="form-control" id="dayss" name="dayss" (selectionChange)="filter($event)" [(ngModel)]="dayss"  >
+                      <mat-option *ngFor="let days of MultidayList" [value]="days" >{{days}}
+                      </mat-option>
+                    </mat-select> -->
+
+                    <mat-select
+                                required
+                                [formControl]="toppings"
+                                class="form-control"
+                                id="d"
+                                name="d"
+                                (selectionChange)="filter($event)"
+                                multiple
+                                [(value)]="selected"
+                                style="margin-top: -20px;width: 552px;"
+                                (ngModelChange)="onDataChange(f.value)">
+                      <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                </div>
+                <div class="col-lg-10" *ngIf="flag == 1 || !this.editPerm">
+                  <input style="margin-left: -12px;" readonly name="multidays" class="form-control"
+                    [(ngModel)]="multidays">
+
+                </div>
+              </div>
+
+
+
+
+              <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;"
+                *ngIf='f.value.sch_FREQ == "Weekly"'>
+                <div class="col-lg-6">
+                  <p> Day Of Week : </p>
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 0 && this.editPerm">
+                  <select required id="week" name="week" class="form-control" [(ngModel)]="week" (ngModelChange)="onDataChange(f.value)">
+                    <option *ngFor="let week of weeks" [value]="week">{{week}} </option>
+                  </select>
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 1 || !this.editPerm">
+                  <input readonly type="text" class="form-control" id="week" name="week" [(ngModel)]="week" />
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;"
+                *ngIf='f.value.sch_FREQ == "Monthly"'>
+                <div class="col-lg-6">
+                  <p> Day : </p>
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 0 && this.editPerm">
+                  <select required id="day" name="day" class="form-control" [(ngModel)]="day" (ngModelChange)="onDataChange(f.value)">
+                    <option *ngFor="let day of days" [value]="day">{{day}} </option>
+                  </select>
+                </div>
+                <div class="col-lg-6" *ngIf="flag == 1 || !this.editPerm">
+                  <input readonly type="text" class="form-control" id="day" name="day" [(ngModel)]="day" />
+                </div>
+              </div>
+
+
+              <!--End FreqTime-->
+
+
+              <!-- <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;">
+        <div class="col-lg-6">
+        <p> Frequency Time : </p>
+        </div>
+        <div class="col-lg-6">
+          <input  type="text" class="form-control" id="sch_TIME" name="sch_TIME" [(ngModel)]="mainData.sch_TIME"  />
+        </div>
+        </div> -->
+
+
+              <!-- <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;">
+          <div class="col-lg-6">
+            <p> Frequency Time : </p>
+          </div>
+          <div class="col-lg-6" *ngIf="flag == 0">
+              <input  for="matDatepicker3" class="col-form-label" matInput  style="width: 85%;"
+              [matDatepicker]="matDatepicker3" id="sch_TIME" #sch_TIME ="ngModel" name="sch_TIME" [(ngModel)]="mainData.sch_TIME"  >
+              <mat-datepicker-toggle matSuffix [for]="matDatepicker3" ></mat-datepicker-toggle>
+              <mat-datepicker #matDatepicker3></mat-datepicker>
+              <mat-hint *ngIf="sch_TIME.errors?.required && sch_TIME.touched">Frequency Time is Required </mat-hint>
+          </div>
+          <div class="col-lg-6"  *ngIf="flag == 1" >
+            <input readonly class="form-control" id="sch_TIME"  name="sch_TIME" [(ngModel)]="sch_TIME"  >
+          </div>
+        </div> -->
+
+
+
+              <hr>
+              <h3 class="header_title">Recipients Info : </h3>
+
+              <!-- <input type="email" formControlName="recipients" class="form-control"  placeholder="username@example.com" [(ngModel)]="mainData.recipients"  >
+        <small *ngIf="schedulerform.get('recipients')?.errors && schedulerform.get('recipients')?.touched && schedulerform.get('recipients')?.validator" class="text-danger">
+          recipients is Required Ex:(username@example.com) </small>  -->
+
+
+              <div class="col-lg-12 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;">
+                <div class="col-lg-2">
+                  <p> Recipients :</p>
+                </div>
+
+                <div class="col-lg-10" *ngIf="flag == 0 && this.editPerm">
+                  <!-- <input type="email" class="form-control" id="recipients" #recipients="ngModel" name="recipients"
+                    [(ngModel)]="mainData.recipients" /> -->
+                  <tag-input name="recipients"
+                             id="recipients"
+                             [editable]='true'
+                             #recipients="ngModel"
+                             [(ngModel)]='mainData.recipients'
+                             [separatorKeyCodes]="[32, 186]"
+                             [errorMessages]="errorMessages"
+                             [validators]="[validateEmail()]"
+                             (onTagEdited)="onDataChange(f.value)"
+                             (ngModelChange)="onDataChange(f.value)">
+                  </tag-input>
+                </div>
+
+                <div class="col-lg-10" *ngIf="flag == 1 || !this.editPerm">
+                  <!-- <input type="email" readonly class="form-control" id="recipients" #recipients="ngModel"
+                    name="recipients" [(ngModel)]="mainData.recipients" /> -->
+                    <tag-input name="recipients"
+                      [disable] = "true"
+                      id="recipients"
+                      #recipients="ngModel"
+                      [(ngModel)]='mainData.recipients'
+                      [errorMessages]="errorMessages"
+                      [validators]="[validateEmail()]"
+                      >
+                    </tag-input>
+                </div>
+              </div>
+
+
+              <div class="col-lg-12 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;">
+                <div class="col-lg-2">
+                  <p> cc : </p>
+                </div>
+                <div class="col-lg-10" *ngIf="flag == 0 && this.editPerm">
+                  <!-- <input type="email" class="form-control" id="cc" #cc="ngModel" name="cc" [(ngModel)]="mainData.cc" /> -->
+                  <!-- <mat-hint *ngIf="cc.errors?.required && cc.touched">cc is Required , Ex:(username@example.com) </mat-hint>  -->
+                  <!-- <mat-hint *ngIf="!validateEmailCC()">cc not valid , Ex:(username@example.com) </mat-hint> -->
+                  <!-- <mat-hint *ngIf="cc.errors?.pattern || cc.errors?.invalid || cc.errors?.email">cc not valid, Ex:(username@example.com) </mat-hint>  -->
+                  <tag-input name="cc"
+                             id="cc"
+                             #cc="ngModel"
+                             [editable]='true'
+                             [(ngModel)]='mainData.cc'
+                             [errorMessages]="errorMessages"
+                             [separatorKeyCodes]="[32, 186]"
+                             [validators]="[validateEmail()]"
+                             (ngModelChange)="onDataChange(f.value)">
+                  </tag-input>
+                </div>
+                <div class="col-lg-10" *ngIf="flag == 1 || !this.editPerm">
+                  <!-- <input type="email" readonly class="form-control" id="cc" #cc="ngModel" name="cc"
+                    [(ngModel)]="mainData.cc" /> -->
+                  <!-- <mat-hint *ngIf="!validateEmailCC()">cc not valid , Ex:(username@example.com) </mat-hint> -->
+                  <tag-input name="cc"
+                            [disable] = "true"
+                            id="cc"
+                            #cc="ngModel"
+                            [(ngModel)]='mainData.cc'
+                            [errorMessages]="errorMessages"
+                            [validators]="[validateEmail()]">
+                  </tag-input>
+                </div>
+              </div>
+
+              <div class="col-lg-12 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;">
+                <div class="col-lg-2">
+                  <p> Email Subject : </p>
+                </div>
+                <div class="col-lg-10" *ngIf="flag == 0 && this.editPerm">
+                  <input type="text" class="form-control" id="email_SUBJECT" #email_SUBJECT="ngModel"
+                    name="email_SUBJECT" [(ngModel)]="mainData.email_SUBJECT" (ngModelChange)="onDataChange(f.value)"/>
+                  <mat-hint *ngIf="email_SUBJECT.errors?.required && email_SUBJECT.touched">Email SUBJECT is Required
+                  </mat-hint>
+                </div>
+                <div class="col-lg-10" *ngIf="flag == 1 || !this.editPerm">
+                  <input readonly type="text" class="form-control" id="email_SUBJECT" #email_SUBJECT="ngModel"
+                    name="email_SUBJECT" [(ngModel)]="mainData.email_SUBJECT" />
+                </div>
+              </div>
+
+              <div class="col-lg-12 col-md-3  col-xs-6 col-sm-6" style="display: inline-flex;">
+                <div class="col-lg-2">
+                  <p> Email Body : </p>
+                </div>
+                <div class="col-lg-10" *ngIf="flag == 0 && this.editPerm">
+                  <!-- <textarea class="form-control"  name="email_BODY" rows="1" [(ngModel)]="mainData.email_BODY"></textarea> -->
+                  <!-- <mat-hint *ngIf="email_BODY.errors?.required && email_BODY.touched">Email Body is Required </mat-hint> -->
+
+                  <ckeditor id="email_BODY" name="email_BODY" [config]="ckeConfig"
+                    [(data)]="mainData.email_BODY" [(ngModel)]="mainData.email_BODY" (change)="onChange($event)" (ngModelChange)="onDataChange(f.value)"
+                    editorUrl="./assets/ckeditor/ckeditor.js">
+                  </ckeditor>
+
+                </div>
+                <div class="col-lg-10" *ngIf="flag == 1 || !this.editPerm">
+                  <div class="cdkeditorreadonly">
+                    <div [innerHTML]="mainData.email_BODY"> </div>
+                    <!-- <textarea readonly class="form-control" id="email_BODY"  name="email_BODY"
+                    rows="1" [(ngModel)]="mainData.email_BODY"></textarea> -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- <ckeditor  (change)="onChange($event)"></ckeditor> -->
+
+
+              <!-- <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display: none;">
+          <div class="col-lg-6">
+            <p> last_TIME_RUN : </p>
+          </div>
+          <div class="col-lg-6"  *ngIf="flag == 0">
+            <input  for="matDatepicker1" class="col-form-label" matInput  style="width: 85%;"
+              [matDatepicker]="matDatepicker1" id="last_TIME_RUN" #last_TIME_RUN ="ngModel" name="last_TIME_RUN" [(ngModel)]="mainData.last_TIME_RUN"  >
+              <mat-datepicker-toggle matSuffix [for]="matDatepicker1" ></mat-datepicker-toggle>
+              <mat-datepicker #matDatepicker1></mat-datepicker>
+             <mat-hint *ngIf="last_TIME_RUN.errors?.required && last_TIME_RUN.touched">last_TIME_RUN is Required </mat-hint>
+          </div>
+          <div class="col-lg-6"  *ngIf="flag == 1" >
+            <input readonly class="form-control"   id="last_TIME_RUN"  name="last_TIME_RUN" [(ngModel)]="last_TIME_RUN"  >
+          </div>
+        </div> -->
+
+
+              <div class="col-lg-4 col-md-3  col-xs-6 col-sm-6" style="display:none;">
+                <div class="col-lg-6">
+                  <p> active_FLAG : </p>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="active_FLAG" name="active_FLAG"
+                      [(ngModel)]="mainData.active_FLAG">
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div>
+            <div class="row">
+              <!-- <button *ngIf="flag == 0"  type="submit" class="btn btn-success">Save </button>    -->
+            </div>
+          </form>
+
+
+
+
+        </div>
+        <div>
+        </div>
+      </mat-expansion-panel>
+
+    </mat-accordion>
+
+
+
+
+  </mat-tab>
+
+  <mat-tab label="Inputs">
+    <app-querybuilder [ActiveFlagQuery]="flag" [ReportID]="mainData.report.rep_ID" [SchID]="mainData.id" [editPermissionName]="editPermissionName"></app-querybuilder>
+  </mat-tab>
+
+  <mat-tab label="Outputs">
+    <app-previewquery [SchIDpreview]="mainData.id" [ReportID]="mainData.report.rep_ID" [ActiveFlag]="flag" [editPermissionName]="editPermissionName"></app-previewquery>
+  </mat-tab>
+</mat-tab-group>
+
+
+<!-- <div class="modal fade" id="ActiveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h3 style='color:#28a745;font-weight: 500; font-size: 16px'>Confirmation message</h3>
+        <hr>
+        <p style='color:black;font-weight: 500; font-size: 16px'>Are you sure you want to activate this report?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="onClickSubmitactive(f.value)"> <i
+            class="fa fa-check "></i>OK</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>CLOSE</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+<div class="modal fade" id="DeactiveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h3 style='color:#28a745;font-weight: 500; font-size: 16px'>Confirmation message</h3>
+        <hr>
+        <p style='color:black;font-weight: 500; font-size: 16px'>Are you sure you want to deactivate this report?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal"
+          (click)="onClickDeactivate(f.value)"> <i class="fa fa-check "></i>OK</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>
+          CLOSE</button>
+      </div>
+    </div>
+  </div>
+</div>

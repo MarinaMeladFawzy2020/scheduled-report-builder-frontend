@@ -1,0 +1,138 @@
+.mat-expansion-panel-header:not([aria-disabled="true"]),
+.mat-expansion-panel-header.mat-expanded:focus,
+.mat-expansion-panel-header.mat-expanded:hover {
+  height: 40px !important;
+  border: 2px solid #dadada;
+  border-radius: 0;
+  background: #e9ecef;
+}
+
+.mat-expansion-panel {
+  margin: 10px;
+}
+
+.mat-expansion-panel-content,
+.contentdetails {
+  margin-top: 10px !important;
+}
+
+.mat-expansion-panel-body {
+  padding: 0 5px 10px;
+}
+
+.contentdetails p {
+  font-size: 16px;
+  color: #000;
+  font-weight: 500;
+  text-align: left;
+}
+
+.contentdetails p span {
+  font-size: 14px;
+  color: #666;
+  text-align: right;
+}
+
+.contentdetails .label2det {
+  float: right;
+  font-weight: 600;
+}
+
+.contentdetails .select {
+  height: 35px;
+  margin-top: -5px;
+}
+.mat-expansion-panel input,
+.mat-expansion-panel textarea {
+  /* margin-top: -5px; */
+  height: 30px;
+  margin-right: -20px;
+}
+
+.mat-expansion-panel textarea {
+  height: 60px;
+}
+
+.searchDiv .col-lg-4,
+.searchDiv .col-lg-10 {
+  margin-bottom: 2px;
+}
+
+.searchDiv #rep_ID {
+  margin-left: -9px;
+  margin-bottom: 5px;
+}
+.searchDiv #dateFrom,
+.searchDiv #dateTo {
+  width: 107px;
+}
+
+mat-hint {
+  color: #a33;
+}
+
+.mat-icon-button {
+  margin-top: 5px;
+  width: 40px;
+  height: 35px !important;
+  line-height: 40px;
+  border-radius: 0% !important;
+}
+
+.search-form {
+  padding: 15px;
+}
+
+.search-form .form-group .form-child > label {
+  margin-right: 15px;
+  margin-bottom: 25px;
+}
+
+.search-form .form-control {
+  display: inline-block;
+}
+
+.select-module {
+  width: 10%;
+}
+
+.select-report {
+  width: 30%;
+}
+
+.schedule-name-text {
+  width: 73%;
+}
+
+.frequency-select {
+  width: 10%;
+}
+
+.schedule-name-text,
+.select-module,
+.select-report,
+.frequency-select,
+.freqtime-text {
+  height: calc(1.5em + 0.75rem + 2px) !important;
+}
+
+.module-input,
+.report-input,
+.schedulename-input,
+.frequency-input {
+  display: inline;
+  margin-right: 20px;
+}
+
+.schedulename-input {
+  display: inline-block;
+  width: 37%;
+}
+
+.freqtime-input {
+  display: inline-block;
+}
+
+.freqtime-text {
+  width: 63%;
+}

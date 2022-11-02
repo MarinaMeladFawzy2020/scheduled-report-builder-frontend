@@ -1,0 +1,22 @@
+.form-control.ng-touched.ng-invalid{
+    border: 1px solid #a33;
+}
+
+.form-control.ng-touched.ng-valid{
+    border: 1px solid #4caf50;
+}
+
+.text-danger {
+    color: #a33!important;
+    font-size: 12px;
+}
+
+.header_title{
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.group-label{
+    margin: 0 20px;
+}

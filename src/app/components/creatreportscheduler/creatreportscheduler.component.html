@@ -1,0 +1,350 @@
+<!-- Button trigger modal -->
+
+<button *ngIf="this.createPerm" type="button" class="btn btn-success" data-toggle="modal" data-target="#schedulerModal" data-backdrop="static"
+  data-keyboard="false" style="margin-left: 11px;">
+  <i class="fa fa-plus"></i> Create Report Scheduler
+</button>
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-xl" id="schedulerModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel"><b>Create Report Schedule</b></h3>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="schedulerform" #f="ngForm">
+
+          <h3 class="header_title">Create Report Schedule Info : </h3>
+
+          <div class="group-label">
+
+            <div class="form-group row">
+              <label for="module" class="col-sm-2 col-form-label title-label">Report Category: </label>
+              <div class="col-sm-10">
+
+                <select id="module" name="module" class="form-control" formControlName="module">
+                  <option *ngFor="let scope of userScopes" [value]="scope">{{scope}}</option>
+                </select>
+
+                <small *ngIf="schedulerform.get('module')?.errors"
+                  class="text-danger">
+                  Required</small>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="rep_ID" class="col-sm-2 col-form-label title-label">Report Name : </label>
+              <div class="col-sm-10">
+
+                <select id="rep_ID" name="rep_ID" class="form-control" formControlName="rep_ID">
+                  <option *ngFor="let Report of AllReports" [value]="Report.rep_ID">{{Report.rep_NAME}}</option>
+                </select>
+
+                <small *ngIf="schedulerform.get('rep_ID')?.errors"
+                  class="text-danger">
+                  Required</small>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="sch_NAME" class="col-sm-2 col-form-label title-label">Schedule Name :</label>
+              <div class="col-sm-10">
+                <input type="text" formControlName="sch_NAME" class="form-control" id="sch_NAME" style="width: 92%;height: 34px;" required>
+                <small *ngIf="schedulerform.get('sch_NAME')?.errors?.required"
+                  class="text-danger">
+                  Required</small>
+                <small *ngIf="schedulerform.get('sch_NAME')?.errors?.maxlength" class="text-danger">
+                  Schedule Name must be at least 100 characters </small>
+
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="sch_START" class="col-sm-2 col-form-label title-label">Schedule Start Date :</label>
+              <div class="col-sm-10">
+                <input for="matDatepicker2" class="col-form-label" matInput formControlName="sch_START"
+                  style="width: 95%;" [matDatepicker]="matDatepicker2" id="sch_START" name="sch_START" ngModel>
+                <mat-datepicker-toggle matSuffix [for]="matDatepicker2"></mat-datepicker-toggle>
+                <mat-datepicker #matDatepicker2></mat-datepicker>
+                <small *ngIf="schedulerform.get('sch_START')?.errors"
+                  class="text-danger">
+                  Required</small>
+              </div>
+            </div>
+
+
+            <div class="form-group row">
+              <label for="created_BY" class="col-sm-2 col-form-label title-label">Creator :</label>
+              <div class="col-sm-10">
+                <input type="text" formControlName="created_BY" class="form-control" id="created_BY"
+                  [(ngModel)]="nameparam1" readonly>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <h3 class="header_title">Frequency Info : </h3>
+          <div class="group-label">
+            <div class="form-group row">
+              <label for="sch_FREQ" class="col-sm-2 col-form-label title-label">Frequency :</label>
+              <div class="col-sm-10">
+                <select id="sch_FREQ" name="sch_FREQ" class="form-control" formControlName="sch_FREQ">
+                  <option *ngFor="let Freq of AllFreq" [value]="Freq.freq_NAME_EN">{{Freq.freq_NAME_EN}} </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- <div class="form-group row" style="display: none;">
+              <label for="sch_FREQ_UNIT" class="col-sm-2 col-form-label title-label">sch_FREQ_UNIT :</label>
+              <div class="col-sm-10">
+                <input type="text" formControlName="sch_FREQ_UNIT" class="form-control" id="sch_FREQ_UNIT">
+              </div>
+            </div> -->
+
+
+
+
+            <div class="form-group row">
+              <label *ngIf='schedulerform.value.sch_FREQ != null' for="sch_TIME" class="col-sm-2 col-form-label title-label">Frequency Unit :</label>
+              <div class="col-sm-10" style="display: inline-flex;">
+                <!-- <input for="matDatepicker3" class="col-form-label" matInput formControlName="sch_TIME"
+                  style="width: 95%;" [matDatepicker]="matDatepicker3" id="sch_TIME" name="sch_TIME" ngModel>
+                <mat-datepicker-toggle matSuffix [for]="matDatepicker3"></mat-datepicker-toggle>
+                <mat-datepicker #matDatepicker3></mat-datepicker>
+                <small *ngIf="schedulerform.get('sch_TIME')?.errors && schedulerform.get('sch_TIME')?.touched"
+                  class="text-danger">
+                  Frequency Unit is Required</small> -->
+
+
+                <div *ngIf='schedulerform.value.sch_FREQ == "Hourly"' >
+                  <label for="minute" > Minute : </label>
+                  <div  style="display: inline-block;">
+                    <select id="minute" name="minute" class="form-control" formControlName="minute" style="margin-left: 10px;">
+                      <option *ngFor="let minu of minute" [value]="minu">{{minu}} </option>
+                    </select>
+                  </div>
+                </div>
+
+
+                <div *ngIf='schedulerform.value.sch_FREQ == "Daily" || schedulerform.value.sch_FREQ == "Weekly" || schedulerform.value.sch_FREQ == "Monthly"' >
+                  <label for="time" > Time : </label>
+                  <div style="display: inline-block;">
+                    <input type="time" formControlName="time" id="time" name="time" class="form-control" style="margin-left: 10px;" >
+                  </div>
+                </div>
+
+                <div *ngIf='schedulerform.value.sch_FREQ == "Daily"' style="margin-top: -13px;">
+                  <label for="days" style="margin-left: 50px; margin-right: 5px;"> Select MultiDay  : </label>
+                  <div style="display: inline-block;">
+                    <mat-form-field>
+                      <mat-select multiple class="form-control" id="days" name="days" formControlName="days"   >
+                        <mat-option *ngFor="let days of MultidayList" [value]="days">{{days}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                  </div>
+                </div>
+
+
+                <div *ngIf='schedulerform.value.sch_FREQ == "Weekly"' >
+                  <label for="day" style="margin-left: 40px;"> Day Of Week : </label>
+                  <div style="display: inline-block;">
+                    <select id="week" name="week" class="form-control" formControlName="week"  style="margin-left: 10px;">
+                      <option *ngFor="let week of weeks" [value]="week">{{week}} </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div *ngIf='schedulerform.value.sch_FREQ == "Monthly"' >
+
+                  <label for="day"  style="margin-left: 40px;"> Day : </label>
+                  <div style="display: inline-block;">
+                    <select id="day" name="day" class="form-control" formControlName="day"  style="margin-left: 10px;">
+                      <option *ngFor="let day of days" [value]="day">{{day}} </option>
+                    </select>
+                  </div>
+                </div>
+
+
+              <!-- <div>
+
+                <input type="datetime-local" class="form-control" > All
+                <input type="date" class="form-control" > date
+                <input type="month"  class="form-control" > month
+                <input type="time" formControlName="sch_TIME" class="form-control" > time
+<br>
+{{sch_TIME  }}
+                <input  matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date"  class="col-form-label"  [formControl]="date"
+                formControlName="sch_TIME"  id="sch_TIME" name="sch_TIME" ngModel  style="width: 90%;"  [(ngModel)] = "sch_TIME"
+                (dateChange)="dateUpdated()"    >
+         <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+         <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false"
+                                  [stepHour]="1" [stepMinute]="1" [stepSecond]="1"
+                                  [touchUi]="false" [enableMeridian]="false"
+                                  [disableMinute]="false" [hideTime]="true" startView="month"> </ngx-mat-datetime-picker>
+              </div> -->
+
+
+
+
+
+
+
+              </div>
+            </div>
+
+
+
+
+
+
+          </div>
+          <hr>
+          <h3 class="header_title">Recipients Info : </h3>
+          <div class="group-label">
+
+            <div class="form-group row">
+              <label for="recipients" class="col-sm-2 col-form-label title-label">Recipients :</label>
+              <div class="col-sm-10">
+               <!-- <input type="email" formControlName="recipients" class="form-control"   placeholder="username@example.com"> -->
+                 <!-- <mat-hint
+                  *ngIf="!checkrec && schedulerform.get('recipients')?.errors && schedulerform.get('recipients')?.touched && schedulerform.get('recipients')?.validator"  class="text-danger">  recipients is Required Ex:(username@example.com) </mat-hint>
+                -->
+                  <!-- <mat-hint *ngIf="!checkrec" class="text-danger">recipients not valid , Ex:(username@example.com) </mat-hint>  -->
+                  <tag-input  formControlName="recipients"
+                              name="recipients"
+                              id="recipients"
+                              [editable]='true'
+                              [separatorKeyCodes]="[32, 186]"
+                              [errorMessages]="errorMessages"
+                              [validators]="[validateEmail()]">
+                  </tag-input>
+              </div>
+            </div>
+
+
+
+
+
+            <div class="form-group row">
+              <label for="cc" class="col-sm-2 col-form-label title-label">CC :</label>
+              <div class="col-sm-10">
+                <!-- <input type="email" formControlName="cc" class="form-control"    placeholder="username@example.com"> -->
+
+                <tag-input  formControlName="cc"
+                            name="cc"
+                            id="cc"
+                            [editable]='true'
+                            [separatorKeyCodes]="[32, 186]"
+                            [errorMessages]="errorMessages"
+                            [validators]="[validateEmail()]">
+                </tag-input>
+
+                <!-- <small
+                  *ngIf="schedulerform.get('cc')?.errors && schedulerform.get('cc')?.touched  && schedulerform.get('cc')?.validator"
+                  class="text-danger">
+                  Please Enter a valid email address</small> -->
+                  <!-- <mat-hint *ngIf="!checkcc" class="text-danger">cc not valid , Ex:(username@example.com) </mat-hint>  -->
+
+              </div>
+            </div>
+
+
+
+
+            <div class="form-group row">
+              <label for="email_SUBJECT" class="col-sm-2 col-form-label title-label">Email Subject :</label>
+              <div class="col-sm-10">
+                <input type="text" formControlName="email_SUBJECT" class="form-control" id="email_SUBJECT">
+                <small
+                  *ngIf="schedulerform.get('email_SUBJECT')?.errors?.required && schedulerform.get('email_SUBJECT')?.touched"
+                  class="text-danger">
+                  Email SUBJECT is Required</small>
+                <small *ngIf="schedulerform.get('email_SUBJECT')?.errors?.maxlength" class="text-danger">
+                  Email SUBJECT must be at least 4000 characters </small>
+
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="email_BODY" class="col-sm-2 col-form-label title-label">Email Body :</label>
+              <div class="col-sm-10">
+                <!-- <textarea class="form-control" id="email_BODY" formControlName="email_BODY" rows="2"></textarea>
+                <small *ngIf="schedulerform.get('email_BODY')?.errors && schedulerform.get('email_BODY')?.touched"
+                  class="text-danger">
+                  Email BODY is Required</small> -->
+
+                  <ckeditor id="email_BODY" formControlName="email_BODY"
+                  data="" (change)="onChange($event)"
+                  editorUrl="./assets/ckeditor/ckeditor.js"></ckeditor>
+              </div>
+            </div>
+
+            <div class="form-group row" style="display: none;">
+              <label for="id" class="col-sm-2 col-form-label title-label">ID :</label>
+              <div class="col-sm-10">
+                <input type="text" formControlName="id" class="form-control" id="id">
+              </div>
+            </div>
+
+
+
+            <!-- <div class="form-group row" style="display: none;">
+              <label for="last_TIME_RUN" class="col-sm-2 col-form-label title-label">last_TIME_RUN :</label>
+              <div class="col-sm-10">
+                <input for="matDatepicker1" class="col-form-label" matInput formControlName="last_TIME_RUN"
+                  style="width: 95%;" [matDatepicker]="matDatepicker1" id="last_TIME_RUN" name="last_TIME_RUN" ngModel>
+                <mat-datepicker-toggle matSuffix [for]="matDatepicker1"></mat-datepicker-toggle>
+                <mat-datepicker #matDatepicker1></mat-datepicker>
+              </div>
+            </div> -->
+
+          </div>
+
+
+          <!-- <div class="form-row">
+              <div class="form-group form-inline col-md-6">1
+              </div>
+              <div class="form-group form-inline col-md-6">2
+              </div>
+            </div> -->
+
+
+
+          <!-- <div class="form-group row">
+              <label for="active_FLAG" class="col-sm-2 col-form-label">active_FLAG :</label>
+              <div class="col-sm-10">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="active_FLAG" formControlName="active_FLAG">
+                </div>
+              </div>
+            </div> -->
+
+          <!-- <div class="form-group row">
+              <label for="input1" class="col-sm-2 col-form-label">name</label>
+              <div class="col-sm-10">
+                <input type="text" formControlName="name" class="form-control" id="input1" placeholder="name">
+                <small *ngIf="schedulerform.get('name')?.errors && schedulerform.get('name')?.touched" class="text-danger"> Is Required</small>
+              </div>
+            </div> -->
+
+
+
+
+
+
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success"
+          (click)="createsub(f.value)" [disabled]="!f.valid">Save</button>
+        <!-- <button type="button" class="btn btn-primary"  (click)="onReset()">Reset</button>  -- schedulerform.invalid-->
+        <button type="button" class="btn btn-danger" (click)="resetForm()" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>

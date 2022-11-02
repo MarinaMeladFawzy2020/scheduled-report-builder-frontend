@@ -1,0 +1,23 @@
+.menu-action {
+  display: flow-root;
+  margin-bottom: -15px;
+  margin-right: -8px;
+  margin-top: 0px;
+  margin-left: -20px;
+}
+.menu-action a,
+.menu-action button {
+  color: white;
+  float: left;
+  margin: 0 2px;
+  border-radius: initial;
+}
+
+.menu-action button i {
+  margin-right: 5px;
+}
+
+.prev-cont {
+  max-width: 100%;
+  padding: 0;
+}

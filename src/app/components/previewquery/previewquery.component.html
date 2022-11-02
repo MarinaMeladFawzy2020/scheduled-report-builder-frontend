@@ -1,0 +1,25 @@
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Select outputs 
+      </mat-panel-title>
+  </mat-expansion-panel-header>
+  <app-previewcolum [SchIDpreviewcol]="SchIDpreview" [ReportIDcol]="ReportID" [editPermissionName]="editPermissionName" [ActiveFlag]="ActiveFlag"   (getResponse)="getResponse($event)"></app-previewcolum> 
+</mat-expansion-panel>
+
+
+<div *ngIf="message == true"> <!-- {{message}} -->
+  <button class="btn btn-danger" [disabled]="!this.isPreviewDone" (click)="onBtnExport()"><i class="fa fa-download" style="margin-right: 10px" aria-hidden="true"></i>Export</button>
+  <br><br>
+  <ag-grid-angular
+      style="height: 500px;"
+      class="ag-theme-alpine"
+      [rowData]="rowData"
+      [columnDefs]="columnDefs"
+      (gridReady)="onGridReady($event)"
+      #agGrid
+      id="myGrid"
+      [suppressExcelExport]="true"
+      >
+  </ag-grid-angular>
+</div>

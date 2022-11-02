@@ -1,0 +1,46 @@
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+.mat-expansion-panel-header:not([aria-disabled="true"]),
+.mat-expansion-panel-header.mat-expanded:focus,
+.mat-expansion-panel-header.mat-expanded:hover {
+  height: 40px !important;
+  border: 2px solid #dadada;
+  border-radius: 0;
+  background: #e9ecef;
+}
+
+.mat-expansion-panel {
+  margin: 10px;
+}
+
+.mat-expansion-panel-content,
+.contentdetails {
+  margin-top: 10px !important;
+}
+
+.mat-expansion-panel-body {
+  padding: 0 5px 10px;
+}
+.mat-expansion-panel {
+  overflow: inherit !important;
+  height: 1000px !important;
+  background: white;
+}
+.form-select {
+  width: auto;
+  display: inline-block;
+  margin-left: 9px;
+  padding: 0 10px;
+  height: 30px;
+  margin-bottom: 9px;
+}
+
+mat-hint {
+  color: #a33;
+}
+
+.ng-select {
+  display: inline-block;
+  margin-left: 18px;
+  width: 30%;
+}
